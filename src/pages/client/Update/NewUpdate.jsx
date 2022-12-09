@@ -1,16 +1,16 @@
 import { Link, redirect } from 'react-router-dom';
-import { doRequest, parseFormData } from '@/api/utilities';
-import { addNewRequest } from '@/api/v1/request';
+import { doUpdate, parseFormData } from '@/api/utilities';
+import { addNewUpdate } from '@/api/v1/update';
 import { Divider } from '@/components/Divider';
 import {
-	NewRequestForm,
-	formFields as newRequestFields,
-} from '@/components/Forms/NewRequestForm';
+	NewUpdateForm,
+	formFields as newUpdateFields,
+} from '@/components/Forms/NewUpdateForm';
 import { Logo } from '@/components/Logo';
 
-export async function action({ request }) {
-	const formData = await request.formData();
-	const body = parseFormData(formData, newRequestFields);
+export async function action({ update }) {
+	const formData = await update.formData();
+	const body = parseFormData(formData, newUpdateFields);
 
 	// body.isFragile = body.isFragile === 'true' ? true : false;
 
@@ -23,13 +23,13 @@ export async function action({ request }) {
 	body.due = due.toISOString();
 
 	try {
-		await doRequest({
+		await doUpdate({
 			body,
-			endpoint: addNewRequest,
-			success: 'Se ha guardado su solicitud!',
+			endpoint: addNewUpdate,
+			success: 'Se ha guardado su actualización!',
 		});
 
-		return redirect('/client/requests');
+		return redirect('/client/updates');
 	} catch (error) {
 		if (!error.toasted) {
 			throw error;
@@ -47,7 +47,7 @@ export function NewRequest() {
 							<Logo spin /> &nbsp; - Nueva Solicitud
 						</h1>
 						<Link
-							to="/client/requests"
+							to="/client/updates"
 							className="pt-2 text-slate-500 italic cursor-pointer hover:underline"
 						>
 							Volver
@@ -55,7 +55,7 @@ export function NewRequest() {
 					</div>
 					<Divider />
 
-					<NewRequestForm />
+					<NewUpdateForm />
 				</div>
 			</div>
 		</section>
